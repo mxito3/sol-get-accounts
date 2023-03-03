@@ -1,13 +1,12 @@
 import { Connection, GetProgramAccountsFilter,PublicKey } from "@solana/web3.js";
-
+import { TOKEN_PROGRAM_ID} from "@solana/spl-token"
 const rpcEndpoint = 'https://capable-necessary-liquid.solana-mainnet.discover.quiknode.pro/ccb3d9879908145ed52034fcecbeb3a3f18a08cb/';
 const solanaConnection = new Connection(rpcEndpoint);
 
-const walletToQuery = 'vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg'; //example: 
+const walletToQuery = 'GJRs4FwHtemZ5ZE9x3FNvJ8TMwitKTh21yxdRPqn7npE'; //example: 
 
 async function getTokenAccounts(wallet: string, solanaConnection: Connection) {
-    const filters:GetProgramAccountsFilter[] = [
-        {
+    const filters:GetProgramAccountsFilter[] = [{
           dataSize: 165,    //size of account (bytes)
         },
         {
@@ -15,9 +14,11 @@ async function getTokenAccounts(wallet: string, solanaConnection: Connection) {
             offset: 32,     //location of our query in the account (bytes)
             bytes: wallet,  //our search criteria, a base58 encoded string
           },            
-        }];
+        }
+      ];
     const accounts = await solanaConnection.getParsedProgramAccounts(
-        new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
+        TOKEN_PROGRAM_ID,
+        // new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"),
         {filters: filters}
     );
     console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
